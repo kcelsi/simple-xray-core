@@ -70,11 +70,11 @@ cat << EOF > /usr/local/etc/xray/config.json
                 "security": "reality",
                 "realitySettings": {
                     "show": false,
-                    "dest": "github.com:443",
+                    "dest": "googletagmanager.com:443",
                     "xver": 0,
                     "serverNames": [
-                        "github.com",
-                        "www.github.com"
+                        "googletagmanager.com",
+                        "www.googletagmanager.com"
                     ],
                     "privateKey": "$privatkey",
                     "minClientVer": "",
