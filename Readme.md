@@ -1,104 +1,105 @@
-# Скрипт для лёгкой установки и настройки ядра X-ray без графического интерфейса
+```md
+# Script for easy installation and configuration of X-ray core without a graphical interface
 
-Вы все знакомы с такими панелями управления, как 3x-ui, Marzban и другими. Все эти панели являются всего лишь графическими надстройками над ядром X-ray и служат для удобного управления им, а также для создания подключений и настроек. Ядро же может работать без всяких панелей и управляться полностью через терминал. Основное преимущество использования «голого» ядра заключается в том, что вам не нужно заморачиваться с доменами и TLS-сертификатами. Само ядро можно установить и администрировать вручную с помощью официальной документации. Этот скрипт предназначен для упрощения этой задачи: он автоматически установит ядро на сервер, создаст конфигурационные файлы и несколько исполняемых файлов для удобного управления пользователями.
+You are all familiar with control panels like 3x-ui, Marzban, and others. All these panels are just graphical interfaces over the X-ray core and serve for convenient management, as well as for creating connections and settings. The core itself can work without any panels and be fully managed via the terminal. The main advantage of using a "bare" core is that you don't need to bother with domains and TLS certificates. The core itself can be installed and administered manually using the official documentation. This script is designed to simplify this task: it will automatically install the core on the server, create configuration files, and several executable files for convenient user management.
 
-## VPS для панели
+## VPS for the panel
 
-Для установки панели нам понадобится VPS-сервер. Приобрести его можно в [ishosting](https://bit.ly/3rOqvPE).  
-В сервисе доступны более 36 локаций. Если вам не нужна какая-то конкретная страна, выбирайте ту, что ближе к вам.
+To install the panel, we will need a VPS server.
+The service offers more than 36 locations. If you don't need a specific country, choose the one closest to you.
 
-## Системные требования
+## System Requirements
 
-- 1 CPU  
-- 1 GB RAM  
-- 10 GB диска  
-- ОС Ubuntu 22 x64 или Ubuntu 24 x64
+- 1 CPU
+- 1 GB RAM
+- 10 GB Disk
+- OS Ubuntu 22 x64 or Ubuntu 24 x64
 
-## Как пользоваться скриптом
-
-Скрипт создавался и тестировался под ОС Ubuntu 22 x64 и Ubuntu 24 x64. На других ОС может работать некорректно. Чтобы скачать и запустить скрипт, используйте эту команду:
+## How to use the script
+The script was created and tested under OS Ubuntu 22 x64 and Ubuntu 24 x64. It may not work correctly on other OS. To download and run the script, use this command:
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/ServerTechnologies/simple-xray-core/refs/heads/main/xray-install | bash
+wget -qO- https://raw.githubusercontent.com/kcelsi/simple-xray-core/refs/heads/main/xray-install | bash
 ```
 
-## Команды для управления пользователями
+## Commands for user management
 
-**Вывести список всех клиентов:**
+**List all clients:**
 
 ```sh
 userlist
 ```
 
-**Вывести ссылку и QR-код для подключения основного пользователя:**
+**Display the link and QR code for connecting the main user:**
 
 ```sh
 mainuser
 ```
 
-**Создать нового пользователя:**
+**Create a new user:**
 
 ```sh
 newuser
 ```
 
-**Удалить пользователя:**
+**Delete a user:**
 
 ```sh
 rmuser
 ```
 
-**Создать ссылку для подключения:**
+**Create a connection link:**
 
 ```sh
 sharelink
 ```
 
-В домашней папке пользователя будет создан файл `help` — в нём содержатся подсказки с описанием команд. Посмотреть его можно с помощью команды (нужно находиться в домашней папке пользователя):
+A `help` file will be created in the user's home folder — it contains tips with command descriptions. You can view it using the command (you need to be in the user's home folder):
 
 ```sh
 cat help
 ```
 
-## Полезные ссылки
+## Useful links
 
-- [GitHub проекта X-ray Core](https://github.com/XTLS/Xray-core)
-- [Официальная документация на русском](https://xtls.github.io/ru/)
+- [X-ray Core GitHub project](https://github.com/XTLS/Xray-core)
+- [Official documentation in Russian](https://xtls.github.io/ru/)
 
-## Клиенты для подключения
+## Clients for connection
 
 **Windows**
 
-- [v2rayN](https://github.com/2dust/v2rayN)  
-- [Furious](https://github.com/LorenEteval/Furious)  
-- [Invisible Man - Xray](https://github.com/InvisibleManVPN/InvisibleMan-XRayClient)  
+- [v2rayN](https://github.com/2dust/v2rayN)
+- [Furious](https://github.com/LorenEteval/Furious)
+- [Invisible Man - Xray](https://github.com/InvisibleManVPN/InvisibleMan-XRayClient)
 
 **Android**
 
-- [v2rayNG](https://github.com/2dust/v2rayNG)  
-- [X-flutter](https://github.com/XTLS/X-flutter)  
-- [SaeedDev94/Xray](https://github.com/SaeedDev94/Xray)  
+- [v2rayNG](https://github.com/2dust/v2rayNG)
+- [X-flutter](https://github.com/XTLS/X-flutter)
+- [SaeedDev94/Xray](https://github.com/SaeedDev94/Xray)
 
 **iOS & macOS arm64**
 
-- [Streisand](https://apps.apple.com/app/streisand/id6450534064)  
-- [Happ](https://apps.apple.com/app/happ-proxy-utility/id6504287215)  
-- [OneXray](https://github.com/OneXray/OneXray)  
+- [Shadowrocker] **Recommended** 💰 Paid (https://apps.apple.com/us/app/shadowrocket/id932747118)
+- [Streisand](https://apps.apple.com/app/streisand/id6450534064)
+- [Happ](https://apps.apple.com/app/happ-proxy-utility/id6504287215)
+- [OneXray](https://github.com/OneXray/OneXray)
 
 **macOS arm64 & x64**
 
-- [V2rayU](https://github.com/yanue/V2rayU)  
-- [V2RayXS](https://github.com/tzmax/V2RayXS)  
-- [Furious](https://github.com/LorenEteval/Furious)  
-- [OneXray](https://github.com/OneXray/OneXray)  
+- [V2rayU](https://github.com/yanue/V2rayU)
+- [V2RayXS](https://github.com/tzmax/V2RayXS)
+- [Furious](https://github.com/LorenEteval/Furious)
+- [OneXray](https://github.com/OneXray/OneXray)
 
 **Linux**
 
-- [Nekoray](https://github.com/MatsuriDayo/nekoray)  
-- [v2rayA](https://github.com/v2rayA/v2rayA)  
-- [Furious](https://github.com/LorenEteval/Furious)  
+- [Nekoray](https://github.com/MatsuriDayo/nekoray)
+- [v2rayA](https://github.com/v2rayA/v2rayA)
+- [Furious](https://github.com/LorenEteval/Furious)
 
-## Если вдруг нужно удалить, то воспользуйтесь этими командами:
+## If you suddenly need to uninstall, use these commands:
 ```sh
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ remove
 rm /usr/local/etc/xray/config.json
