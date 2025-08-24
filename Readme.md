@@ -81,7 +81,7 @@ cat help
 
 **iOS & macOS arm64**
 
-- [Shadowrocker] (https://apps.apple.com/us/app/shadowrocket/id932747118) **Recommended** 💰 Paid
+- [Shadowrocker](https://apps.apple.com/us/app/shadowrocket/id932747118) **Recommended** 💰 Paid
 - [Streisand](https://apps.apple.com/app/streisand/id6450534064)
 - [Happ](https://apps.apple.com/app/happ-proxy-utility/id6504287215)
 - [OneXray](https://github.com/OneXray/OneXray)
