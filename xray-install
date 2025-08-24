@@ -146,10 +146,10 @@ sni=$(jq -r '.inbounds[0].streamSettings.realitySettings.serverNames[0]' /usr/lo
 ip=$(timeout 3 curl -4 -s icanhazip.com)
 link="$protocol://$uuid@$ip:$port?security=reality&sni=$sni&fp=firefox&pbk=$pbk&sid=$sid&spx=/&type=tcp&flow=xtls-rprx-vision&encryption=none#vless-$ip"
 echo ""
-echo "Ссылка для подключения":
+echo "Link for connection":
 echo "$link"
 echo ""
-echo "QR-код:"
+echo "QR code:"
 echo ${link} | qrencode -t ansiutf8
 EOF
 chmod +x /usr/local/bin/mainuser
@@ -184,7 +184,7 @@ echo ""
 echo "Connection link":
 echo "$link"
 echo ""
-echo "QR-код:"
+echo "QR code:"
 echo ${link} | qrencode -t ansiutf8
 else
 echo "User with this name already exists. Try again." 
@@ -211,7 +211,7 @@ done
 read -p "Enter customer number to delete: " choice
 
 if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#emails[@]} )); then
-    echo "Ошибка: номер должен быть от 1 до ${#emails[@]}"
+    echo "Error: number must be from 1 to ${#emails[@]}"
     exit 1
 fi
 
@@ -240,7 +240,7 @@ done
 read -p "Select client: " client
 
 if ! [[ "$client" =~ ^[0-9]+$ ]] || (( client < 1 || client > ${#emails[@]} )); then
-    echo "Error: number must from 1 to ${#emails[@]}"
+    echo "Error: number must be from 1 to ${#emails[@]}"
     exit 1
 fi
 
@@ -261,7 +261,7 @@ echo ""
 echo "Connection link":
 echo "$link"
 echo ""
-echo "QR-код:"
+echo "QR code:"
 echo ${link} | qrencode -t ansiutf8
 EOF
 chmod +x /usr/local/bin/sharelink
@@ -275,14 +275,14 @@ mainuser
 touch $HOME/help
 cat << 'EOF' > $HOME/help
 
-Команды для управления пользователями Xray:
-    mainuser - выводит ссылку для подключения основного пользователя
-    newuser - создает нового пользователя
-    rmuser - удаление пользователей
-    sharelink - выводит список пользователей и позволяет создать для них ссылки для подключения
-    userlist - выводит список клиентов
-Файл конфигурации находится по адресу:
+Xray user management commands:
+    mainuser - displays the link for the main user connection
+    newuser - creates a new user
+    rmuser - deletes users
+    sharelink - displays a list of users and allows creating connection links for them
+    userlist - displays a list of clients
+Configuration file is located at:
     /usr/local/etc/xray/config.json
-Команда для перезагрузки ядра Xray:
+Command to restart Xray core:
     systemctl restart xray
 EOF
