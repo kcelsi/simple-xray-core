@@ -1,19 +1,19 @@
 #!/bin/bash
-apt update
-apt install qrencode curl jq -y
+# Install libs
+apt update && apt install qrencode curl jq -y
 
-# Включаем bbr
+# Turn on bbr
 bbr=$(sysctl -a | grep net.ipv4.tcp_congestion_control)
 if [ "$bbr" = "net.ipv4.tcp_congestion_control = bbr" ]; then
-echo "bbr уже включен"
+echo "bbr already on"
 else
 echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 sysctl -p
-echo "bbr включен"
+echo "bbr on"
 fi
 
-# Устанавливаем ядро Xray
+# Installing Xray kernel
 bash -c "$(curl -4 -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 [ -f /usr/local/etc/xray/.keys ] && rm /usr/local/etc/xray/.keys
 touch /usr/local/etc/xray/.keys
@@ -24,7 +24,7 @@ export uuid=$(cat /usr/local/etc/xray/.keys | awk -F': ' '/uuid/ {print $2}')
 export privatkey=$(cat /usr/local/etc/xray/.keys | awk -F': ' '/Private key/ {print $2}')
 export shortsid=$(cat /usr/local/etc/xray/.keys | awk -F': ' '/shortsid/ {print $2}')
 
-# Создаем файл конфигурации Xray
+# Creating an Xray configuration file
 touch /usr/local/etc/xray/config.json
 cat << EOF > /usr/local/etc/xray/config.json
 {
@@ -115,25 +115,25 @@ cat << EOF > /usr/local/etc/xray/config.json
 }
 EOF
 
-# Исполняемый файл для списка клиентов
+# Executable file for the client list
 touch /usr/local/bin/userlist
 cat << 'EOF' > /usr/local/bin/userlist
 #!/bin/bash
 emails=($(jq -r '.inbounds[0].settings.clients[].email' "/usr/local/etc/xray/config.json"))
 
 if [[ ${#emails[@]} -eq 0 ]]; then
-    echo "Список клиентов пуст"
+    echo "The client list is empty"
     exit 1
 fi
 
-echo "Список клиентов:"
+echo "Client list:"
 for i in "${!emails[@]}"; do
     echo "$((i+1)). ${emails[$i]}"
 done
 EOF
 chmod +x /usr/local/bin/userlist
 
-# исполняемый файл для ссылки основного пользователя
+# Executable file for primary user reference
 touch /usr/local/bin/mainuser
 cat << 'EOF' > /usr/local/bin/mainuser
 #!/bin/bash
@@ -154,14 +154,14 @@ echo ${link} | qrencode -t ansiutf8
 EOF
 chmod +x /usr/local/bin/mainuser
 
-# Исполняемый файл для создания новых клиентов
+# Executable file to create new clients
 touch /usr/local/bin/newuser
 cat << 'EOF' > /usr/local/bin/newuser
 #!/bin/bash
-read -p "Введите имя пользователя (email): " email
+read -p "Enter username (email): " email
 
     if [[ -z "$email" || "$email" == *" "* ]]; then
-    echo "Имя пользователя не может быть пустым или содержать пробелы. Попробуйте снова."
+    echo "Username cannot be blank or contain spaces. Try again."
     exit 1
     fi
 user_json=$(jq --arg email "$email" '.inbounds[0].settings.clients[] | select(.email == $email)' /usr/local/etc/xray/config.json)
@@ -181,34 +181,34 @@ sni=$(jq -r '.inbounds[0].streamSettings.realitySettings.serverNames[0]' /usr/lo
 ip=$(curl -4 -s icanhazip.com)
 link="$protocol://$uuid@$ip:$port?security=reality&sni=$sni&fp=firefox&pbk=$pbk&sid=$sid&spx=/&type=tcp&flow=xtls-rprx-vision&encryption=none#$username"
 echo ""
-echo "Ссылка для подключения":
+echo "Connection link":
 echo "$link"
 echo ""
 echo "QR-код:"
 echo ${link} | qrencode -t ansiutf8
 else
-echo "Пользователь с таким именем уже существует. Попробуйте снова." 
+echo "User with this name already exists. Try again." 
 fi
 EOF
 chmod +x /usr/local/bin/newuser
 
-# Исполняемый файл для удаления клиентов
+# Executable file to delete clients
 touch /usr/local/bin/rmuser
 cat << 'EOF' > /usr/local/bin/rmuser
 #!/bin/bash
 emails=($(jq -r '.inbounds[0].settings.clients[].email' "/usr/local/etc/xray/config.json"))
 
 if [[ ${#emails[@]} -eq 0 ]]; then
-    echo "Нет клиентов для удаления."
+    echo "No clients to delete."
     exit 1
 fi
 
-echo "Список клиентов:"
+echo "Customer list:"
 for i in "${!emails[@]}"; do
     echo "$((i+1)). ${emails[$i]}"
 done
 
-read -p "Введите номер клиента для удаления: " choice
+read -p "Enter customer number to delete: " choice
 
 if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#emails[@]} )); then
     echo "Ошибка: номер должен быть от 1 до ${#emails[@]}"
@@ -223,11 +223,11 @@ jq --arg email "$selected_email" \
 
 systemctl restart xray
 
-echo "Клиент $selected_email удалён."
+echo "Client $selected_email deleted."
 EOF
 chmod +x /usr/local/bin/rmuser
 
-# Исполняемый файл для вывода списка пользователей и создания ссылкок
+# Executable file for outputting a list of users and creating links
 touch /usr/local/bin/sharelink
 cat << 'EOF' > /usr/local/bin/sharelink
 #!/bin/bash
@@ -237,10 +237,10 @@ for i in "${!emails[@]}"; do
    echo "$((i + 1)). ${emails[$i]}"
 done
 
-read -p "Выберите клиента: " client
+read -p "Select client: " client
 
 if ! [[ "$client" =~ ^[0-9]+$ ]] || (( client < 1 || client > ${#emails[@]} )); then
-    echo "Ошибка: номер должен быть от 1 до ${#emails[@]}"
+    echo "Error: number must from 1 to ${#emails[@]}"
     exit 1
 fi
 
@@ -258,7 +258,7 @@ sni=$(jq -r '.inbounds[0].streamSettings.realitySettings.serverNames[0]' /usr/lo
 ip=$(curl -4 -s icanhazip.com)
 link="$protocol://$uuid@$ip:$port?security=reality&sni=$sni&fp=firefox&pbk=$pbk&sid=$sid&spx=/&type=tcp&flow=xtls-rprx-vision&encryption=none#$username"
 echo ""
-echo "Ссылка для подключения":
+echo "Connection link":
 echo "$link"
 echo ""
 echo "QR-код:"
@@ -268,29 +268,21 @@ chmod +x /usr/local/bin/sharelink
 
 systemctl restart xray
 
-echo "Xray-core успешно установлен"
+echo "✅ Xray-core sucessfuly installed"
 mainuser
 
-# Создаем файл с подсказками
+# Creating a hints file
 touch $HOME/help
 cat << 'EOF' > $HOME/help
 
 Команды для управления пользователями Xray:
-
     mainuser - выводит ссылку для подключения основного пользователя
     newuser - создает нового пользователя
     rmuser - удаление пользователей
     sharelink - выводит список пользователей и позволяет создать для них ссылки для подключения
     userlist - выводит список клиентов
-
-
-
 Файл конфигурации находится по адресу:
-
     /usr/local/etc/xray/config.json
-
 Команда для перезагрузки ядра Xray:
-
     systemctl restart xray
-
 EOF
